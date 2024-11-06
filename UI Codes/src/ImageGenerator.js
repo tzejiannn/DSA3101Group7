@@ -1,158 +1,234 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const ImageGenerator = () => {
-  const [textInput, setTextInput] = useState('');
+  // State for the inputs and results
+  const [type, setType] = useState('');
+  const [color, setColor] = useState('');
+  const [design, setDesign] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [error, setError] = useState('');
+  const [uploadedImage, setUploadedImage] = useState(null);  // State to handle uploaded image
 
+  // Function to combine inputs and generate the image
   const generateImage = async () => {
-    setLoading(true);
-    setImageUrl(''); // Clear previous image
-    const response = await fetch(`https://image.pollinations.ai/prompt/${encodeURIComponent(textInput)}`);
-    
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      setImageUrl(url);
-    } else {
-      console.error('Error generating image');
+    // Ensure all fields are filled before sending the request
+    if (!type || !color || !design) {
+      alert('Please fill in all fields!');
+      return;
     }
-    setLoading(false);
+
+    // Combine the inputs into a single prompt
+    const prompt = `${type} ${color} ${design}`;
+
+    setLoading(true);
+    setError('');
+
+    try {
+      // Send the combined prompt to the Pollinations API
+      const response = await axios.get('https://image.pollinations.ai/prompt/' + encodeURIComponent(prompt), {
+        params: {
+          model: 'default',  // Optional, you can change this
+          width: 1024,       // Increase width to 1024px
+          height: 1024,      // Increase height to 1024px
+          nologo: false,
+          private: false,
+          enhance: false,
+        },
+        responseType: 'arraybuffer',  // We're expecting an image buffer
+      });
+
+      // Convert the response data (image) into a Blob and create a URL for it
+      const imageBlob = new Blob([response.data], { type: 'image/png' });
+      const imageObjectURL = URL.createObjectURL(imageBlob);
+
+      // Set the image URL to display it
+      setImageUrl(imageObjectURL);
+    } catch (err) {
+      setError('Error generating image.');
+      console.error('Error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Handle file upload
+  // Function to handle the file upload
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUploadedImage(reader.result); // Set the uploaded image as a URL
-      };
-      reader.readAsDataURL(file); // Read the file as data URL
+      // Create a URL for the uploaded image
+      const fileUrl = URL.createObjectURL(file);
+      setUploadedImage(fileUrl);  // Set the uploaded image URL
     }
   };
 
   return (
-    <div 
-      style={{
-        backgroundColor: '#ADD8E6',  // Light blue background
-        minHeight: '100vh',          // Full screen height
-        display: 'flex',             // Flexbox to center the content
-        justifyContent: 'center',    // Center horizontally
-        alignItems: 'center',        // Center vertically
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: 'white',   // White background for the rectangle box
-          padding: '70px',            // Add padding inside the box
-          borderRadius: '10px',       // Rounded corners for the box
-          width: '90%',               // Make the box take up 90% of the width
-          maxWidth: '600px',          // Limit max width to 600px
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Light shadow for the box
-        }}
-      >
-        <h1 style={{ textAlign: 'center', color: 'orange' }}>Design Your Product</h1>
-
-        {/* Text Input */}
-        <textarea
-          value={textInput}
-          onChange={(e) => setTextInput(e.target.value)}
-          placeholder="Describe your design (e.g., Red shirt with striped pattern)"
-          rows="5"
-          style={{
-            width: '100%',
-            padding: '10px',
-            fontSize: '16px',
-            borderRadius: '8px',
-            marginBottom: '20px',
-            border: '1px solid #ccc', // Border for the textbox
-            resize: 'none',            // Disable resizing the textbox
-          }}
-        />
+    <div style={{ backgroundColor: '#add8e6', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ width: '80%', maxWidth: '900px', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', display: 'flex', flexDirection: 'row', gap: '20px' }}>
         
-        {/* Upload Image Button */}
-        <p style={{ fontSize: '16px', marginBottom: '10px' }}>
-          Upload your own design (optional):
-        </p>
-        <div style={{ textAlign: 'left', marginBottom: '40px' }}>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileUpload}
-            style={{
-              padding: '10px',
-              backgroundColor: '#4CAF50',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              width: '35%',
-              fontSize: '16px',
-              cursor: 'pointer',
-            }}
-          />
-        </div>
+        {/* Left Section - Form to input data */}
+        <div style={{ flex: 1 }}>
+          <h1 style={{ textAlign: 'center', color: 'orange' }}>Design Your Product</h1>
 
-        {/* Generate Image Button */}
-        <div style={{ textAlign: 'center' }}>
-          <button 
-            onClick={generateImage} 
-            disabled={loading}
-            style={{
-              backgroundColor: '#FF8C00',  // Orange button
-              color: 'dark grey',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '8px',
-              fontSize: '18px',
-              cursor: 'pointer',
-              width: '60%',  // Make the button full width of the container
-              marginBottom: '20px',
-            }}
-          >
-            {loading ? 'Generating...' : 'Generate Image'}
-          </button>
-        </div>
-        
-        {/* Display Uploaded Image */}
-        {uploadedImage && (
-          <div style={{ textAlign: 'center' }}>
-            <img
-              src={uploadedImage}
-              alt="Uploaded"
+          {/* Color */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '16px', fontWeight: 'bold' }}>
+              Color:
+            </label>
+            <input
+              type="text"
+              placeholder="Enter color (e.g., red, blue, green)"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              style={{ width: '90%', padding: '10px', fontSize: '16px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+          </div>
+          
+          {/* Type of Apparel */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '16px', fontWeight: 'bold' }}>
+              Type of Apparel:
+            </label>
+            <input
+              type="text"
+              placeholder="Enter type of apparel (e.g., shirt, pants, jacket)"
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              style={{ width: '90%', padding: '10px', fontSize: '16px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+          </div>
+
+
+          {/* Design (Larger Textbox with Placeholder) */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '16px', fontWeight: 'bold' }}>
+              Design:
+            </label>
+            <textarea
+              placeholder="Enter your description (e.g., with red dots)"
+              value={design}
+              onChange={(e) => setDesign(e.target.value)}
+              rows="6"  // Makes the textbox taller (6 rows)
               style={{
-                width: '100%',
-                maxHeight: '300px',  // Limit the size of the uploaded image
-                objectFit: 'contain',
-                borderRadius: '8px',
-                marginBottom: '20px',
+                width: '90%',  // Full width
+                padding: '10px',
+                fontSize: '14px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                resize: 'none',  // Prevent resizing
               }}
             />
           </div>
-        )}
 
-        {/* Display Generated Image */}
-        {imageUrl && (
-          <div style={{ textAlign: 'center' }}>
+          {/* Upload Image Button */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '16px', fontWeight: 'bold' }}>
+              Upload Your Own Design (Optional):
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileUpload}
+              style={{
+                display: 'none', // Hide the default input box
+              }}
+              id="upload-image"
+            />
+            <label 
+              htmlFor="upload-image" 
+              style={{
+                display: 'inline-block',
+                width: '60px',
+                height: '60px',
+                backgroundColor: '#4CAF50',
+                borderRadius: '8px',
+                textAlign: 'center',
+                lineHeight: '60px',
+                color: 'white',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '14px',
+                marginTop: '10px'
+              }}
+            >
+              +
+            </label>
+          </div>
+
+          {/* Button to Generate Image */}
+          <div style={{ textAlign: 'center'}}>
+            <button 
+              onClick={generateImage} 
+              disabled={loading}
+              style={{ 
+                padding: '10px 20px', 
+                backgroundColor: 'orange', 
+                color: 'dark grey', 
+                border: 'none', 
+                borderRadius: '4px', 
+                fontSize: '16px', 
+                cursor: 'pointer' 
+              }}>
+              {loading ? 'Generating...' : 'Generate Image'}
+            </button>
+          </div>
+
+          {/* Error message if image generation fails */}
+          {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+        </div>
+
+        {/* Right Section - Display the Generated Image */}
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+          padding: '20px',
+          border: '2px solid #ccc',  // Outline for the image area
+          borderRadius: '8px',
+          minHeight: '400px',  // Minimum height to show the outline
+          width: 'calc(100% - 2cm)',  // Reduce width by 1 cm on each side
+          backgroundColor: imageUrl || uploadedImage ? 'transparent' : '#f0f0f0',  // Light background when no image
+        }}>
+          {uploadedImage ? (
+            <img 
+              src={uploadedImage} 
+              alt="Uploaded"
+              style={{ 
+                width: '100%',  
+                height: '100%', 
+                objectFit: 'cover', 
+                borderRadius: '8px' 
+              }} 
+            />
+          ) : imageUrl ? (
             <img 
               src={imageUrl} 
               alt="Generated" 
-              style={{
-                width: '100%',
-                maxHeight: '400px',  // Optional, set a max height for the image
-                objectFit: 'contain', // Ensures image aspect ratio is maintained
-                borderRadius: '8px',  // Rounded corners for the image
-                marginBottom: '20px', // Space below the image
-              }}
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover', 
+                borderRadius: '8px' 
+              }} 
             />
-          </div>
-        )}
+          ) : (
+            <p style={{ fontSize: '18px', color: '#888' }}>
+              Image
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default ImageGenerator;
+
+
+
+
 
 
