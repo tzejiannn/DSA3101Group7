@@ -181,18 +181,7 @@ for epoch in range(n_epochs):
 
     print(f"Epoch [{epoch+1}/{n_epochs}] | D Loss: {d_loss.item()} | G Loss: {g_loss.item()}")
 
-import torch
-
-# Assume `model` is your generative model instance
-# Saving the model state
-torch.save(model.state_dict(), 'path/to/model_checkpoint.pth')
-
-# Loading the model state
-model.load_state_dict(torch.load('path/to/model_checkpoint.pth'))
-
-
 # Generate a sample image for each color label (0=Red, 1=Blue, 2=Green)
-
 generator.eval()
 
 for color_label in range(num_classes):
