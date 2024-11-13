@@ -1,7 +1,7 @@
 -- Query 1: Retrieve All Reviews for a Specific Product
 SELECT rating, title, text, user_id, date, helpful_vote, verified_purchase
 FROM reviews_table
-WHERE product_id = '12345';
+WHERE product_id = 'B091GMMYPS';
 
 
 -- Query 2: Filter Reviews with High Ratings (4 and above)
