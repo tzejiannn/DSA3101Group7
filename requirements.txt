@@ -1,4 +1,5 @@
 Flask==3.0.3
+Flask-Cors==5.0.0
 glob
 ipykernel==6.29.5
 ipython==8.27.0
