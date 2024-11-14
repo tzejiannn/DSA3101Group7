@@ -13,3 +13,6 @@ When the scirpt is run succesfully, 3 separate folders
 
 
 Due to the noise in Amazon dataset images, we also created a separate mini dataset consisting of 25 images in the mini_dataset folder. These images were also used to train our models. 
+
+Due to the size of the trained models being too big, to download the trained models head to the google drive through the link below
+https://drive.google.com/drive/folders/1XP5F8W9oHcGiUUgvAoYZLYVqA9ls3e2V?usp=sharing
