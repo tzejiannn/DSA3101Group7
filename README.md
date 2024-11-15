@@ -40,7 +40,16 @@ trends.
  demand.
 - Analyze the potential impact of dynamic pricing on sales and profit margins.
 
-## Setting up the Environment
+## Setting up
+### Setting up UI for AI Image Synthesis
+1. Set up React development environment
+* Install Node.js
+> Go to the Node.js download page and download the LTS version
+2. Open UI code. UI code can be downloaded at the code section UI Codes -> UI Codes Subgroup A -> src
+3. Open src using editor (eg. Visual Studio Code)
+4. Run UI environment
+* Type "npm start" in project directory
+5. Run app.py to ensure product Recommendation function works
 
 ## Repository Structure
 - **API/API Subgroup A**: Contains API-related code and resources developed by Subgroup A.
