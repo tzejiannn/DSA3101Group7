@@ -125,3 +125,14 @@ API codes can be found under the API folder in the repository.
 * Torchvision
 * NumPy
 * PIL
+
+### Web Application API
+**Technologies Used**
+*tensorflow
+*streamlit
+*sqlalchemy
+*Pandas
+*NumPy
+*Cosine Similarity
+*Scikit-learn
+
