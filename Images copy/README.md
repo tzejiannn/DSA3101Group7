@@ -1,1 +1,1 @@
-A collection of all images generated for our project.
+A collection of all images generated for subgroup B
