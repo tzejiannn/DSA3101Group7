@@ -23,3 +23,18 @@ satisfaction, and increase revenue.
 - Analyse user behaviour data to identify the most effective customization workflows.
 
 ## DSA3101SubGroupB
+### **Inventory Management and Pricing Optimisation**
+
+1. How can we accurately predict demand for customized products? 
+- Develop a demand forecasting model using historical data and user customization choices. 
+- Identify key factors influencing demand fluctuations for personalized merchandise.
+
+2. What inventory management strategies would optimize stock levels while minimizing costs?
+- Create an algorithm to optimize inventory based on predicted demand and customization
+trends.
+- Simulate the impact of proposed inventory strategies on costs and product availability.
+
+3. How can we implement a dynamic pricing model for customized products?
+- Develop a pricing algorithm that accounts for customization complexity, material costs, and
+ demand.
+- Analyze the potential impact of dynamic pricing on sales and profit margins.
