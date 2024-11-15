@@ -169,9 +169,8 @@ def dynamic_pricing(df1, low_inventory_threshold, high_inventory_threshold):
         complexity_rank = complexity_ranks.get(row['Customisation Complexity'], 1)
         price_adjustment += (complexity_rank / max(complexity_ranks.values())) * 0.05
         
-        # Additional holiday price increase
         if row['Holiday'] == 1:
-            price_adjustment += 0.15
+            price_adjustment -= 0.20
 
         return price_adjustment
 
@@ -181,7 +180,6 @@ def dynamic_pricing(df1, low_inventory_threshold, high_inventory_threshold):
         best_revenue = row['Predicted Revenue']
         actual_revenue = row['Actual Revenue']
     
-        
         if best_revenue >= actual_revenue * target_revenue_increase:
             best_price = initial_price * adjust_price(row, variation_ranks, material_ranks, complexity_ranks)
             if row['Inventory'] < low_inventory_threshold:
