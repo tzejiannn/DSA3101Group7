@@ -53,13 +53,15 @@ trends.
 
 ## Repository Structure
 - **API/API Subgroup A**: Contains API-related code and resources developed by Subgroup A.
+- **Dashboard SubgroupA**: Directory for the dashboard for Subgroup A
 - **Data**: Directory for datasets used across the project. 
-- **Images copy**: Backup of image files for reference or documentation.
+- **Images Subgroup B**: Backup of image files for reference or documentation.
 - **Models**: Trained models and scripts for model development.
 - **Subgroup B Streamlit app**: Streamlit application files specific to Subgroup B.
 - **UI Codes/UI Codes Subgroup A**: User interface code and assets developed by Subgroup A.
 - **Wiki_Images**: Images used for documentation or Wiki resources.
 - **sql/sql Subgroup A**: SQL scripts and database-related files for Subgroup A.
+- **.DS_Store**: metadata
 - **README.md**: Documentation and overview of the project.
 - **requirements.txt**: List of dependencies needed for the project.
 
