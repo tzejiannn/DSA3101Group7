@@ -7,6 +7,7 @@ for better operational efficiency and profitability.
 
 ## Folder Structure
 
+- **.DS_Store**: Metadata for the application. 
 - **Dockerfile**: The configuration file for building the Docker container.
 - **README.md**: Provides an overview and instructions for the application.
 - **requirements.txt**: Contains a list of required Python packages to run the application.
