@@ -107,3 +107,19 @@ To run the Store Manager streamlit app using Docker, you will need:
 
 
 ## API Documentation
+API codes can be found under the API folder in the repository.
+### Product Recommmendation API
+**Technologies Used**
+* Flask
+* Python
+* Cosine Similarity
+* Pandas
+* Scikit-learn
+
+### VAE Model API
+**Technologies Used**
+* Flask
+* PyTorch
+* Torchvision
+* NumPy
+* PIL
