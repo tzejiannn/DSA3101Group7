@@ -128,11 +128,11 @@ API codes can be found under the API folder in the repository.
 
 ### Web Application API
 **Technologies Used**
-*tensorflow
-*streamlit
-*sqlalchemy
-*Pandas
-*NumPy
-*Cosine Similarity
-*Scikit-learn
+* tensorflow
+* streamlit
+* sqlalchemy
+* Pandas
+* NumPy
+* Cosine Similarity
+* Scikit-learn
 
